@@ -1,0 +1,79 @@
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-main-header,
+.site-main-content {
+  background: #fff;
+}
+
+.site-main-header {
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  .toggle {
+    cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+
+  .logout {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #333;
+    .text {
+      font-size: 14px;
+      margin-left: 5px;
+    }
+    &:hover {
+      color: #1890ff;
+    }
+  }
+}
+.site-main-content {
+  margin: 24px 16px;
+  padding: 24px;
+  minheight: 280px;
+}
+
+.page-index {
+  padding: 40px;
+  [class~="ant-col"] {
+    background: transparent;
+    border: 0;
+  }
+  [class~="ant-col"] .card {
+    height: 200px;
+    font-size: 16px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ebeef5;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px #efe6e6;
+    color: #333;
+    .text {
+      margin-top: 20px;
+    }
+  }
+}
+
+.page-article {
+  .page-header {
+    margin-bottom: 30px;
+  }
+  .controls {
+    margin-bottom: 30px;
+  }
+}

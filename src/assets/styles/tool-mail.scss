@@ -1,0 +1,20 @@
+.pages-tool-mail {
+  margin: 20px auto;
+  width: 1000px;
+  .title {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  .container {
+    display: flex;
+    .left {
+      width: 400px;
+    }
+    .right {
+      margin: 20px 30px;
+    }
+  }
+  canvas {
+    border-radius: 10px;
+  }
+}
