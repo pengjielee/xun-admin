@@ -155,7 +155,7 @@ const App = () => {
   };
 
   return (
-    <div className="pages-tool-mail">
+    <div className="page-tool-mail">
       <Head>
         <meta charSet="UTF-8" />
         <meta
