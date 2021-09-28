@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { Header } from "@/components";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -21,15 +21,8 @@ const App = () => {
   };
 
   return (
-    <div className="pages-tool-mail">
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1.0,user-scalable=no"
-        />
-        <title>WangEditor</title>
-      </Head>
+    <div className="pages-tool-editor">
+      <Header title="WangEditor"></Header>
       <h1 className="title">WangEditor</h1>
 
       <ReactWEditor

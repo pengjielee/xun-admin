@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
-import Head from "next/head";
+import { Header } from "@/components";
 import { Input, Button, Form, message } from "antd";
 import aboutusImg from "@/images/aboutus.png";
 import addressImg from "@/images/address.png";
@@ -156,15 +156,9 @@ const App = () => {
 
   return (
     <div className="page-tool-mail">
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1.0,user-scalable=no"
-        />
-        <title>生成邮箱签名</title>
+      <Header title="生成邮箱签名">
         <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
-      </Head>
+      </Header>
       <h1 className="title">生成邮箱签名</h1>
 
       <div className="container">

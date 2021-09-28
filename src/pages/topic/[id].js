@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { Header } from "@/components";
 import Error from "next/error";
 import Image from "next/image";
 
@@ -12,15 +12,8 @@ export default function Detail({ topic }) {
   const { loginname, avatar_url } = author;
 
   return (
-    <div className="page page-topic-detail">
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1.0,user-scalable=no"
-        />
-        <title>{title}</title>
-      </Head>
+    <div className="page-topic-detail">
+      <Header title={title}></Header>
 
       <main>
         <h1>${title}</h1>
