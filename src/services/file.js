@@ -27,3 +27,6 @@ export const remove = (id) =>
       "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
   });
+
+export const exportNote = (params) =>
+  (window.location.href = `http://localhost:3001/api/excel/export/note`);

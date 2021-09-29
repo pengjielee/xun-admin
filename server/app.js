@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/note", require("./routes/note"));
 app.use("/api/article", require("./routes/article"));
 app.use("/api/file", require("./routes/file"));
+app.use("/api/excel", require("./routes/excel"));
 
 const PORT = 3001;
 

@@ -23,13 +23,13 @@ const Add = () => {
           <Row gutter={[20, 20]}>
             <Col span={6}>
               <div className="card">
-                <h1>单张上传图片</h1>
+                <h1>单张图片上传</h1>
                 <Uploader onChange={handleChange} />
               </div>
             </Col>
             <Col span={6}>
               <div className="card">
-                <h1>多张上传图片</h1>
+                <h1>多张图片上传</h1>
                 <Uploader multipie onChange={handleChange} />
               </div>
             </Col>

@@ -66,6 +66,10 @@ function MyApp({ Component, pageProps, pathname }) {
       selected: "6",
       sub: true,
     },
+    "/tool/excel/export": {
+      selected: "7",
+      sub: true,
+    },
   };
   let selectedKeys = ["1"];
   let openKeys = ["1"];
@@ -106,6 +110,9 @@ function MyApp({ Component, pageProps, pathname }) {
               </Menu.Item>
               <Menu.Item key="6">
                 <Link href="/tool/wangeditor">编辑器</Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <Link href="/tool/excel/export">导出Excel</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
