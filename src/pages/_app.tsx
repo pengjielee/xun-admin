@@ -15,14 +15,14 @@ import {
   HomeOutlined,
   FileTextOutlined,
   MailOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 
 import "antd/dist/antd.css";
 import "../assets/styles/globals.css";
 import "../assets/styles/user.scss";
-import "../assets/styles/app.scss";
-import "../assets/styles/topic.scss";
-import "../assets/styles/tool-mail.scss";
+import "../assets/styles/site.scss";
+import "../assets/styles/page.scss";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -67,10 +67,15 @@ function MyApp({ Component, pageProps, pathname }) {
       sub: true,
     },
   };
-  const selectedKeys = [menus[pathname].selected] || ["1"];
-  const openKeys = menus[pathname].sub
-    ? ["sub", menus[pathname].selected]
-    : [menus[pathname].selected];
+  let selectedKeys = ["1"];
+  let openKeys = ["1"];
+
+  if (pathname && menus[pathname]) {
+    selectedKeys = [menus[pathname].selected];
+    openKeys = menus[pathname].sub
+      ? ["sub", menus[pathname].selected]
+      : [menus[pathname].selected];
+  }
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -91,6 +96,9 @@ function MyApp({ Component, pageProps, pathname }) {
             </Menu.Item>
             <Menu.Item key="3" icon={<FileTextOutlined />}>
               <Link href="/article/list">文章</Link>
+            </Menu.Item>
+            <Menu.Item key="4" icon={<UploadOutlined />}>
+              <Link href="/file/list">文件</Link>
             </Menu.Item>
             <SubMenu key="sub" icon={<SettingOutlined />} title="工具">
               <Menu.Item key="5">
@@ -128,7 +136,7 @@ function MyApp({ Component, pageProps, pathname }) {
 
 MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext);
-  const pathname = appContext.router.pathname || '/';
+  const pathname = appContext.router.pathname || "/";
 
   return { ...appProps, pathname };
 };

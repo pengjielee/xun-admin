@@ -42,11 +42,7 @@ router.post("/add", async (req, res, next) => {
       .push(article)
       .write()
       .then(() => {
-        const added = db
-          .get("articles")
-          .value()
-          .find((p) => p.id === article.id);
-        res.jsonp({ code: 200, msg: "success", data: added });
+        res.jsonp({ code: 200, msg: "success", data: article });
       });
   });
 });

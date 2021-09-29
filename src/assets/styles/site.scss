@@ -1,0 +1,44 @@
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-main-header,
+.site-main-content {
+  background: #fff;
+}
+
+.site-main-header {
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  .toggle {
+    cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+
+  .logout {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #333;
+    .text {
+      font-size: 14px;
+      margin-left: 5px;
+    }
+    &:hover {
+      color: #1890ff;
+    }
+  }
+}
+.site-main-content {
+  margin: 24px 16px;
+  padding: 24px;
+  minheight: 280px;
+}
