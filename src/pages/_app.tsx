@@ -23,6 +23,7 @@ import "../assets/styles/globals.css";
 import "../assets/styles/user.scss";
 import "../assets/styles/site.scss";
 import "../assets/styles/page.scss";
+import "../assets/styles/activity.scss";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -58,16 +59,32 @@ function MyApp({ Component, pageProps, pathname }) {
       selected: "3",
       sub: false,
     },
-    "/tool/mail": {
+    "/file/list": {
+      selected: "4",
+      sub: false,
+    },
+    "/file/upload": {
+      selected: "4",
+      sub: false,
+    },
+    "/activity/list": {
       selected: "5",
+      sub: false,
+    },
+    "/activity/add": {
+      selected: "5",
+      sub: false,
+    },
+    "/tool/mail": {
+      selected: "11",
       sub: true,
     },
     "/tool/wangeditor": {
-      selected: "6",
+      selected: "12",
       sub: true,
     },
     "/tool/excel/export": {
-      selected: "7",
+      selected: "13",
       sub: true,
     },
   };
@@ -104,14 +121,17 @@ function MyApp({ Component, pageProps, pathname }) {
             <Menu.Item key="4" icon={<UploadOutlined />}>
               <Link href="/file/list">文件</Link>
             </Menu.Item>
+            <Menu.Item key="5" icon={<UploadOutlined />}>
+              <Link href="/activity/list">活动</Link>
+            </Menu.Item>
             <SubMenu key="sub" icon={<SettingOutlined />} title="工具">
-              <Menu.Item key="5">
+              <Menu.Item key="11">
                 <Link href="/tool/mail">生成邮箱签名</Link>
               </Menu.Item>
-              <Menu.Item key="6">
+              <Menu.Item key="12">
                 <Link href="/tool/wangeditor">编辑器</Link>
               </Menu.Item>
-              <Menu.Item key="7">
+              <Menu.Item key="13">
                 <Link href="/tool/excel/export">导出Excel</Link>
               </Menu.Item>
             </SubMenu>

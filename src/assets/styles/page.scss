@@ -4,6 +4,10 @@ $main-color: #eee;
   padding: 30px;
 }
 
+.page-header {
+  margin-bottom: 30px;
+}
+
 .page-tool-mail {
   .title {
     margin-bottom: 20px;
@@ -76,5 +80,11 @@ $main-color: #eee;
   }
   .controls {
     margin-bottom: 30px;
+  }
+}
+
+.page-activity-list {
+  .search-form {
+    margin: 20px 0;
   }
 }
