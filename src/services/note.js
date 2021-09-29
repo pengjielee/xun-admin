@@ -1,11 +1,9 @@
 import fetch from "@/utils/fetch";
 import qs from "qs";
 
-const baseUrl = "";
-
 export const add = (data) =>
   fetch({
-    url: `${baseUrl}/api/note/add`,
+    url: `/api/note/add`,
     method: "post",
     data: qs.stringify(data),
     headers: {
@@ -15,7 +13,7 @@ export const add = (data) =>
 
 export const update = (data) =>
   fetch({
-    url: `${baseUrl}/api/note/update`,
+    url: `/api/note/update`,
     method: "put",
     data: qs.stringify(data),
     headers: {

@@ -12,11 +12,11 @@ import {
 // 需要在服务端渲染的组件（为了SEO）
 import Banner from "@/modules/banner/index";
 import Images from "@/modules/images/index";
-import Products from "@/modules/product/index";
+import Product from "@/modules/product/index";
 
-// import 'normalize.css';
+import "normalize.css";
 
-export default function Index({ model }) {
+const Index = ({ model }) => {
   const { activity, modules } = model;
   const { id, title, keywords, description, url } = activity;
 
@@ -117,7 +117,11 @@ export default function Index({ model }) {
       </div>
     </>
   );
-}
+};
+
+Index.layout = "fullpage";
+
+export default Index;
 
 export async function getServerSideProps(req) {
   const { id } = req.params;

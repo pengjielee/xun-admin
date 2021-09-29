@@ -52,7 +52,6 @@ export const addModule = (data) =>
     },
   });
 
-//更新活动
 export const updateModule = (data) =>
   fetch({
     url: `/api/activity/module/update`,
@@ -92,22 +91,4 @@ export const copy = (data) =>
     headers: {
       "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
-  });
-
-//获取活动内容（html）
-export const getContent = (url) =>
-  fetch({
-    url: url,
-  });
-
-export const getActivityAnalyzeList = (params) =>
-  fetch({
-    url: `/api/activity/list`,
-    params,
-  });
-
-export const getActivitySignUpList = (params) =>
-  fetch({
-    url: `/api/activity/list`,
-    params,
   });

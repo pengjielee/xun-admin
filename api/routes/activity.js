@@ -20,11 +20,11 @@ moduleDB.then((db) => {
 
 router.get("/list", (req, res) => {
   db.then((db) => {
-    const items = db
+    const models = db
       .get("items")
       .value()
       .sort((a, b) => b.update_date - a.update_date);
-    res.jsonp({ code: 200, msg: "success", data: items });
+    res.jsonp({ code: 200, msg: "success", data: models });
   });
 });
 
@@ -61,7 +61,13 @@ router.post("/add", async (req, res, next) => {
   model.id = nanoid();
   model.create_date = Date.now();
   model.update_date = Date.now();
+
   db.then((db) => {
+    const dbModel = db.get("items").find({ url: model.url }).value();
+    if (dbModel) {
+      return res.jsonp({ code: 500, msg: "failture", data: null });
+    }
+
     db.get("items")
       .push(model)
       .write()
@@ -73,23 +79,22 @@ router.post("/add", async (req, res, next) => {
 
 router.put("/update", async (req, res, next) => {
   const { id, ...rest } = req.body;
+
   db.then((db) => {
     db.get("items")
       .find({ id })
       .assign({ ...rest, update_date: Date.now() })
       .write()
       .then(() => {
-        const updated = db
-          .get("items")
-          .value()
-          .find((p) => p.id === id);
-        res.jsonp({ code: 200, msg: "success", data: updated });
+        const model = db.get("items").find({ id }).value();
+        res.jsonp({ code: 200, msg: "success", data: model });
       });
   });
 });
 
 router.post("/delete/:id", function (req, res, next) {
   const { id } = req.params;
+
   db.then((db) => {
     db.get("items")
       .remove({ id })
@@ -115,6 +120,7 @@ router.post("/module/add", async (req, res, next) => {
   model.id = nanoid();
   model.create_date = Date.now();
   model.update_date = Date.now();
+
   moduleDB.then((db) => {
     db.get("items")
       .push(model)
@@ -127,14 +133,15 @@ router.post("/module/add", async (req, res, next) => {
 
 router.post("/module/update", async (req, res, next) => {
   const { id, ...rest } = req.body;
+
   moduleDB.then((db) => {
     db.get("items")
       .find({ id })
       .assign({ ...rest, update_date: Date.now() })
       .write()
       .then(() => {
-        const updated = db.get("items").find({ id }).value();
-        res.jsonp({ code: 200, msg: "success", data: updated });
+        const model = db.get("items").find({ id }).value();
+        res.jsonp({ code: 200, msg: "success", data: model });
       });
   });
 });

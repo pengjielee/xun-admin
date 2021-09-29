@@ -3,7 +3,7 @@ export default function Rules(props) {
 
   return (
     <>
-      <div className="module-rules">
+      <div className="module-rule">
         <p className="rule-title">{title}</p>
         <div
           className="rule-content"

@@ -29,8 +29,10 @@ const Uploader = (props) => {
     fileApi
       .upload(formData)
       .then((res) => {
-        if (typeof props.onChange === "function") {
-          props.onChange(res);
+        if (res.code === 200 && typeof props.onChange === "function") {
+          const filename = res.data.url.replace("public/", "");
+          const url = `http://localhost:3000/${filename}`;
+          props.onChange(url);
         }
       })
       .finally(() => (fileRef.current.value = ""));
@@ -46,8 +48,8 @@ const Uploader = (props) => {
     fileApi
       .uploads(formData)
       .then((res) => {
-        if (typeof props.onChange === "function") {
-          props.onChange(res);
+        if (res.code === 200 && typeof props.onChange === "function") {
+          props.onChange(res.data);
         }
       })
       .finally(() => (fileRef.current.value = ""));

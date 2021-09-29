@@ -24,7 +24,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import ColorPicker from "rc-color-picker";
 import { builtInModules } from "@/modules";
-import { Card, Submiting, Uploader } from "@/components";
+import { Card, Submiting, Uploader, Header } from "@/components";
 import { defaultPageConfig, saleSystemOptions } from "@/utils";
 import moment from "moment";
 import { activityApi } from "@/services";
@@ -68,7 +68,9 @@ export default function Index() {
     activityApi.detail(id).then((res) => {
       if (res.code === 200) {
         const { activity, modules } = res.data;
-        const config = activity.config ? JSON.parse(activity.config) : null;
+        const config = activity.config
+          ? JSON.parse(activity.config)
+          : defaultPageConfig;
         form.setFieldsValue({ ...activity, config });
         setCards(modules || []);
       }
@@ -189,9 +191,7 @@ export default function Index() {
   return (
     <>
       <div className="page-admin page-activity-edit">
-        <Head>
-          <title>编辑活动</title>
-        </Head>
+        <Header title="编辑活动"></Header>
         <div className="activity-form">
           <header className="header">
             <Breadcrumb>

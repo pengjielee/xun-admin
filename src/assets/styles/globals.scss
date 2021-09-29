@@ -1,18 +1,22 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-/*a {
-  color: inherit;
-  text-decoration: none;
-}*/
-
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: PingFang SC, Helvetica, Arial, sans-serif;
+}
+
+img {
+  width: 100%;
+}
+select option[value=""][disabled] {
+  display: none;
 }
 
 html,
@@ -45,6 +49,16 @@ body,
     flex-direction: column;
     text-align: center;
   }
+}
+
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
 }
 
 .hidden {

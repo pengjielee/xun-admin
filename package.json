@@ -9,8 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit -p tsconfig.json",
-    "pt": "prettier --write src/ server/",
-    "server": "node server/app.js"
+    "pt": "prettier --write src/ api/",
+    "start:api": "node api/app.js"
   },
   "dependencies": {
     "antd": "^4.16.0",
@@ -34,7 +34,11 @@
     "react-dnd-html5-backend": "^14.0.0",
     "react-dom": "17.0.2",
     "sass": "^1.41.0",
-    "wangeditor-for-react": "^1.4.0"
+    "wangeditor-for-react": "^1.4.0",
+    "react-hook-form": "^7.7.1",
+    "react-mobile-datepicker": "^4.0.2",
+    "react-toastify": "^7.0.4",
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "@types/node": "^16.9.1",

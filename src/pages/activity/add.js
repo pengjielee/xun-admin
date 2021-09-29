@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Breadcrumb, Button, Form, Input, message } from "antd";
 import { useRouter } from "next/router";
-import { addActivity } from "@/services/activity";
-import Head from "next/head";
 import Link from "next/link";
 import { Submiting, Header } from "@/components";
 import { activityApi } from "@/services";
@@ -21,8 +19,11 @@ export default function Index() {
       .add(values)
       .then((res) => {
         if (res.code === 200) {
+          const model = res.data;
           message.success("新建活动成功");
-          // router.push(`/activity/edit/${model.id}`);
+          router.push(`/activity/edit/${model.id}`);
+        } else {
+          message.error("页面Url已存在，换一个吧");
         }
       })
       .finally(() => setSubmiting(false));

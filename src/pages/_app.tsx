@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 
 import "antd/dist/antd.css";
-import "../assets/styles/globals.css";
+import "../assets/styles/globals.scss";
 import "../assets/styles/user.scss";
 import "../assets/styles/site.scss";
 import "../assets/styles/page.scss";
@@ -55,7 +55,19 @@ function MyApp({ Component, pageProps, pathname }) {
       selected: "2",
       sub: false,
     },
+    "/note/add": {
+      selected: "2",
+      sub: false,
+    },
+    "/note/edit/[id]": {
+      selected: "2",
+      sub: false,
+    },
     "/article/list": {
+      selected: "3",
+      sub: false,
+    },
+    "/article/edit/[id]": {
       selected: "3",
       sub: false,
     },
@@ -72,6 +84,18 @@ function MyApp({ Component, pageProps, pathname }) {
       sub: false,
     },
     "/activity/add": {
+      selected: "5",
+      sub: false,
+    },
+    "/activity/[id]": {
+      selected: "5",
+      sub: false,
+    },
+    "/activity/edit/[id]": {
+      selected: "5",
+      sub: false,
+    },
+    "/activity/module/[id]": {
       selected: "5",
       sub: false,
     },

@@ -10,7 +10,7 @@ const nodeExcel = require("excel-export");
 const db = low(new FileAsync(path.join(__dirname, "../db/note.json")));
 
 db.then((db) => {
-  db.defaults({ notes: [] }).write();
+  db.defaults({ items: [] }).write();
 });
 
 router.get("/export/note", (req, res) => {
@@ -55,14 +55,14 @@ router.get("/export/note", (req, res) => {
   ];
 
   db.then((db) => {
-    const notes = db
-      .get("notes")
+    const models = db
+      .get("items")
       .value()
       .sort((a, b) => b.update_date - a.update_date);
 
     const rows = [];
 
-    notes.map((note) => {
+    models.map((note) => {
       const row = [];
       const { id, content, create_date, update_date } = note;
       row.push(id);

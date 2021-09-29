@@ -31,7 +31,7 @@ function Banner(props) {
       >
         <Input />
       </Form.Item>
-      <Uploader previewImg={detail.image} onChange={handleUploaderChange} />
+      <Uploader onChange={handleUploaderChange} />
       <br />
       <Form.Item
         label="图片描述信息（用于SEO）"

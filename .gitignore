@@ -34,5 +34,5 @@ yarn-error.log*
 # vercel
 .vercel
 .git
-/server/db/*.json
+/api/db/*.json
 /public/uploads

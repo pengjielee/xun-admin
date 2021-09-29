@@ -11,7 +11,7 @@ const adapter = new FileAsync(path.join(__dirname, "../db/file.json"));
 const db = low(adapter);
 
 db.then((db) => {
-  db.defaults({ files: [] }).write();
+  db.defaults({ items: [] }).write();
 });
 
 const storage = multer.diskStorage({
@@ -63,35 +63,36 @@ const upload = multer({
 
 router.get("/list", (req, res) => {
   db.then((db) => {
-    const files = db
-      .get("files")
+    const models = db
+      .get("items")
       .value()
       .sort((a, b) => b.create_date - a.create_date);
-    res.jsonp({ code: 200, msg: "success", data: files });
+    res.jsonp({ code: 200, msg: "success", data: models });
   });
 });
 
 router.post("/upload", upload.single("file"), async (req, res, next) => {
-  const file = {
+  const model = {
     id: nanoid(),
     create_date: Date.now(),
     url: req.file.path,
   };
+
   db.then((db) => {
-    db.get("files")
-      .push(file)
+    db.get("items")
+      .push(model)
       .write()
       .then(() => {
-        res.jsonp({ code: 200, msg: "success", data: file });
+        res.jsonp({ code: 200, msg: "success", data: model });
       });
   });
 });
 
 router.post("/uploads", upload.array("files"), async (req, res, next) => {
-  const files = [];
+  const models = [];
 
   req.files.forEach((file) => {
-    files.push({
+    models.push({
       id: nanoid(),
       create_date: Date.now(),
       url: file.path,
@@ -99,17 +100,18 @@ router.post("/uploads", upload.array("files"), async (req, res, next) => {
   });
 
   db.then((db) => {
-    files.forEach((file) => {
-      db.get("files").push(file).write();
+    models.forEach((model) => {
+      db.get("items").push(model).write();
     });
-    res.jsonp({ code: 200, msg: "success", data: files });
+    res.jsonp({ code: 200, msg: "success", data: models });
   });
 });
 
 router.post("/delete/:id", function (req, res, next) {
   const { id } = req.params;
+
   db.then((db) => {
-    db.get("files")
+    db.get("items")
       .remove({ id })
       .write()
       .then(() => {

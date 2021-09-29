@@ -5,69 +5,68 @@ const FileAsync = require("lowdb/adapters/FileAsync");
 const path = require("path");
 const { nanoid } = require("nanoid");
 
-const adapter = new FileAsync(path.join(__dirname, "../db/article.json"));
+const adapter = new FileAsync(path.join(__dirname, "../db/note.json"));
 const db = low(adapter);
 
 db.then((db) => {
-  db.defaults({ articles: [] }).write();
+  db.defaults({ items: [] }).write();
 });
 
 router.get("/list", (req, res) => {
   db.then((db) => {
-    const articles = db
-      .get("articles")
+    const models = db
+      .get("items")
       .value()
       .sort((a, b) => b.update_date - a.update_date);
-    res.jsonp({ code: 200, msg: "success", data: articles });
+    res.jsonp({ code: 200, msg: "success", data: models });
   });
 });
 
 router.get("/:id", (req, res) => {
+  const { id } = req.params;
+
   db.then((db) => {
-    const article = db
-      .get("articles")
-      .value()
-      .find((p) => p.id === req.params.id);
-    res.jsonp({ code: 200, msg: "success", data: article });
+    const model = db.get("items").find({ id }).value();
+    res.jsonp({ code: 200, msg: "success", data: model });
   });
 });
 
 router.post("/add", async (req, res, next) => {
-  const article = req.body;
-  article.id = nanoid();
-  article.create_date = Date.now();
-  article.update_date = Date.now();
+  const model = req.body;
+  model.id = nanoid();
+  model.create_date = Date.now();
+  model.update_date = Date.now();
+
   db.then((db) => {
-    db.get("articles")
-      .push(article)
+    db.get("items")
+      .push(model)
       .write()
       .then(() => {
-        res.jsonp({ code: 200, msg: "success", data: article });
+        res.jsonp({ code: 200, msg: "success", data: model });
       });
   });
 });
 
 router.put("/update", async (req, res, next) => {
   const { id, ...rest } = req.body;
+
   db.then((db) => {
-    db.get("articles")
+    db.get("items")
       .find({ id })
       .assign({ ...rest, update_date: Date.now() })
       .write()
       .then(() => {
-        const updated = db
-          .get("articles")
-          .value()
-          .find((p) => p.id === id);
-        res.jsonp({ code: 200, msg: "success", data: updated });
+        const model = db.get("items").find({ id }).value();
+        res.jsonp({ code: 200, msg: "success", data: model });
       });
   });
 });
 
 router.post("/delete/:id", function (req, res, next) {
   const { id } = req.params;
+
   db.then((db) => {
-    db.get("articles")
+    db.get("items")
       .remove({ id })
       .write()
       .then(() => {
