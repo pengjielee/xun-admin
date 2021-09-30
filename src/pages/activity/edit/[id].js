@@ -1,55 +1,66 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-import { Breadcrumb, Button, Form, Input, message } from "antd";
-import { BgColorsOutlined } from "@ant-design/icons";
-// import { BasicIcon, ModuleIcon, TimeIcon } from '@/styles/icons';
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Breadcrumb, Button, Form, Input, DatePicker, message } from "antd";
+import { BgColorsOutlined } from "@ant-design/icons";
+import { BasicIcon, ModuleIcon, TimeIcon } from "@/assets/icons";
+
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import ColorPicker from "rc-color-picker";
+import moment from "moment";
+
 import { builtInModules } from "@/modules";
 import { Card, Submiting, Header } from "@/components";
 import { defaultPageConfig } from "@/utils";
 import { activityApi } from "@/services";
+import headerImg from "@/images/header.png";
 
 const Loading = Submiting;
-
-const previewUrl = "";
-const firstPublishAt = "";
 
 import "rc-color-picker/assets/index.css";
 
 export default function Index() {
   const router = useRouter();
+  const { id: activity_id } = router.query;
   const [form] = Form.useForm();
-  const { id } = router.query;
-
-  const initialValues = {
-    id: "",
-    name: "",
-    url: "",
-    title: "",
-    keywords: "",
-    description: "",
-    config: { ...defaultPageConfig },
-  };
-
+  const [previewUrl, setPreviewUrl] = useState("");
+  const frameRef = useRef(null);
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const frameRef = useRef(null);
+  const initialValues = {
+    id: "",
+    draft_name: "",
+    url: "",
+    draft_title: "",
+    draft_keywords: "",
+    draft_description: "",
+    draft_end_date: "",
+    draft_end_title: "",
+    draft_end_content: "",
+    draft_config: { ...defaultPageConfig },
+  };
 
-  const getActivityInfo = (id) => {
+  const getActivityInfo = () => {
+    if (!activity_id) {
+      return;
+    }
+
     setLoading(true);
-    activityApi.detail(id).then((res) => {
+    activityApi.draft(activity_id).then((res) => {
       if (res.code === 200) {
         const { activity, modules } = res.data;
-        const config = activity.config
-          ? JSON.parse(activity.config)
+        const draft_config = activity.draft_config
+          ? JSON.parse(activity.draft_config)
           : defaultPageConfig;
-        form.setFieldsValue({ ...activity, config });
+        const draft_end_date = activity.draft_end_date
+          ? moment(activity.draft_end_date)
+          : "";
+        form.setFieldsValue({ ...activity, draft_end_date, draft_config });
         setCards(modules || []);
       }
     });
@@ -57,24 +68,34 @@ export default function Index() {
   };
 
   useEffect(() => {
-    id && getActivityInfo(id);
-  }, [id]);
+    getActivityInfo();
+  }, []);
 
-  const onFinish = async () => {
+  const onFinish = async (action) => {
     const values = await form.validateFields();
 
-    const { config, ...rest } = values;
+    const { draft_config, draft_end_date, ...rest } = values;
 
     const data = {
       ...rest,
-      config: JSON.stringify(config),
-      module_ids: cards.map((item) => item.id).join(","),
+      draft_config: JSON.stringify(draft_config),
+      draft_end_date: draft_end_date
+        ? moment(draft_end_date).format("YYYY-MM-DD HH:mm:ss")
+        : "",
+      draft_module_ids: cards.map((item) => item.id).join(","),
     };
 
-    console.log(data);
     activityApi.update(data).then((res) => {
       if (res.code === 200) {
         message.success("保存成功");
+        action === "save"
+          ? router.replace(`/activity/list`)
+          : setPreviewUrl(`/activity/preview/${activity_id}`);
+        if (previewUrl) {
+          frameRef.current.src = previewUrl;
+        }
+      } else {
+        message.error("页面Url已存在，换一个吧");
       }
     });
   };
@@ -95,22 +116,21 @@ export default function Index() {
       .addModule({
         type: type,
         name: type,
-        activity_id: id,
+        activity_id: activity_id,
       })
       .then((res) => {
         if (res.code === 200) {
+          const model = res.data;
+          setCards([...cards, model]);
           message.success("添加模块成功");
-          getActivityInfo(id);
         }
       });
   };
 
-  const handleDeleteModule = (module_id) => {
-    activityApi.deleteModule({ activity_id: id, id: module_id }).then((res) => {
-      if (res.code === 200) {
-        setCards(res.data);
-      }
-    });
+  const handleDeleteModule = (id) => {
+    activityApi.deleteModule({ activity_id: activity_id, id: id });
+    const newCards = [].concat(cards).filter((item) => item.id != id);
+    setCards(newCards);
   };
 
   const handleEditModule = (id) => {
@@ -132,20 +152,20 @@ export default function Index() {
     [cards]
   );
 
-  const handleColorPickerChange = (color, key) => {
+  const handleColorChange = (color, key) => {
     const formValues = form.getFieldsValue();
 
     const field = {};
     field[key] = color.color;
 
-    const config = Object.assign({}, formValues.config, field);
-    const data = Object.assign({}, formValues, { config: config });
+    const draft_config = Object.assign({}, formValues.draft_config, field);
+    const data = Object.assign({}, formValues, { draft_config: draft_config });
     form.setFieldsValue(data);
   };
 
   const handleUrlChange = (e) => {
     const url = e.target.value.toLowerCase();
-    form.setFieldsValue({ url: url });
+    form.setFieldsValue({ url });
   };
 
   const handleRefresh = () => {
@@ -154,7 +174,7 @@ export default function Index() {
     }
   };
 
-  const urlValidator = (rule, value) => {
+  const validateUrl = (rule, value) => {
     if (value) {
       value = value.toLowerCase();
       if (value.startsWith("copy")) {
@@ -196,17 +216,20 @@ export default function Index() {
 
             <Form.Item
               label="活动名称"
-              name="name"
+              name="draft_name"
               rules={[{ required: true, message: "请输入活动名称" }]}
             >
               <Input maxLength={20} placeholder="请输入20字内活动名称" />
             </Form.Item>
 
             <fieldset className="form-fieldset">
-              <legend>页面基础信息</legend>
+              <legend>
+                <BasicIcon style={{ color: "#FF0033" }} />
+                页面基础信息
+              </legend>
               <Form.Item
                 label="页面标题"
-                name="title"
+                name="draft_title"
                 rules={[{ required: true, message: "请输入页面标题" }]}
               >
                 <Input maxLength={20} placeholder="请输入20字内标题" />
@@ -217,21 +240,21 @@ export default function Index() {
                 name="url"
                 rules={[
                   {
-                    validator: urlValidator,
+                    validator: validateUrl,
                   },
                 ]}
               >
                 <Input
                   placeholder="20个英文字母、数字，最大长度为20"
                   maxLength={20}
-                  disabled={firstPublishAt != null}
+                  disabled={form.getFieldValue("first_publish_date") != ""}
                   onChange={handleUrlChange}
                 />
               </Form.Item>
 
               <Form.Item
                 label="页面关键字"
-                name="keywords"
+                name="draft_keywords"
                 rules={[{ required: true, message: "请输入页面关键字" }]}
               >
                 <Input.TextArea
@@ -242,7 +265,7 @@ export default function Index() {
 
               <Form.Item
                 label="页面描述信息"
-                name="description"
+                name="draft_description"
                 rules={[{ required: true, message: "请输入页面描述信息" }]}
               >
                 <Input.TextArea
@@ -253,7 +276,10 @@ export default function Index() {
             </fieldset>
 
             <fieldset className="form-fieldset">
-              <legend>模块配置</legend>
+              <legend>
+                <ModuleIcon style={{ color: "#0066CC" }} />
+                模块配置
+              </legend>
 
               <Form.Item label="可添加模块">
                 <div className="list list-2">
@@ -306,47 +332,64 @@ export default function Index() {
 
               <Form.Item label="页面背景色">
                 <div className="row">
-                  <Form.Item name={["config", "bgColor"]}>
+                  <Form.Item name={["draft_config", "bgColor"]}>
                     <Input />
                   </Form.Item>
                   <ColorPicker
                     animation="slide-up"
-                    color={form.getFieldValue(["config", "bgColor"])}
-                    onChange={(color) =>
-                      handleColorPickerChange(color, "bgColor")
-                    }
+                    color={form.getFieldValue(["draft_config", "bgColor"])}
+                    onChange={(color) => handleColorChange(color, "bgColor")}
                   />
                 </div>
               </Form.Item>
 
               <Form.Item label="页面主题色">
                 <div className="row">
-                  <Form.Item name={["config", "themeColor"]}>
+                  <Form.Item name={["draft_config", "themeColor"]}>
                     <Input />
                   </Form.Item>
                   <ColorPicker
                     animation="slide-up"
-                    color={form.getFieldValue(["config", "themeColor"])}
-                    onChange={(color) =>
-                      handleColorPickerChange(color, "themeColor")
-                    }
+                    color={form.getFieldValue(["draft_config", "themeColor"])}
+                    onChange={(color) => handleColorChange(color, "themeColor")}
                   />
                 </div>
               </Form.Item>
 
               <Form.Item label="文字标题模块配色">
                 <div className="row">
-                  <Form.Item name={["config", "titleColor"]}>
+                  <Form.Item name={["draft_config", "titleColor"]}>
                     <Input />
                   </Form.Item>
                   <ColorPicker
                     animation="slide-up"
-                    color={form.getFieldValue(["config", "titleColor"])}
-                    onChange={(color) =>
-                      handleColorPickerChange(color, "titleColor")
-                    }
+                    color={form.getFieldValue(["draft_config", "titleColor"])}
+                    onChange={(color) => handleColorChange(color, "titleColor")}
                   />
                 </div>
+              </Form.Item>
+            </fieldset>
+
+            <fieldset className="form-fieldset">
+              <legend>
+                <TimeIcon style={{ color: "#FF0033" }} />
+                活动结束设置
+              </legend>
+              <Form.Item label="活动结束时间" name="draft_end_date">
+                <DatePicker
+                  showTime
+                  format={"YYYY-MM-DD HH:mm:ss"}
+                  placeholder="活动结束时间"
+                />
+              </Form.Item>
+              <Form.Item label="活动结束时页面显示标题" name="draft_end_title">
+                <Input maxLength={20} placeholder="最多20个字符" />
+              </Form.Item>
+              <Form.Item
+                label="活动结束时页面显示内容"
+                name="draft_end_content"
+              >
+                <Input.TextArea maxLength={40} placeholder="最多40个字符" />
               </Form.Item>
             </fieldset>
 
@@ -360,17 +403,23 @@ export default function Index() {
                 保存
               </Button>
               <br />
+              <br />
+              <Button
+                block
+                type="default"
+                className="ant-btn-secondary"
+                htmlType="submit"
+                onClick={() => onFinish("preview")}
+              >
+                保存并预览
+              </Button>
             </Form.Item>
           </Form>
         </div>
-        <div className="activity-preview" style={{ display: "none " }}>
+        <div className="activity-preview">
           <div className="preview-container">
             <header className="preview-header">
-              <Image
-                alt=""
-                src="https://of.xmfile.cn/pro/mkt_resource/20210624/6bc16aaf2e8a4039bdd5f2a956a0e0f3.png"
-                className="status"
-              />
+              <Image className="status" src={headerImg} alt="" laytout="fill" />
               <div className="name"></div>
             </header>
             {previewUrl ? (

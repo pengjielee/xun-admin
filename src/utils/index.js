@@ -47,9 +47,9 @@ export const effectOptions = [
 ];
 
 export const activityStatusOptions = [
-  { id: 1, text: "已上线", value: 0 },
-  { id: 2, text: "待发布", value: 1 },
-  { id: 3, text: "已下线", value: 2 },
+  { id: 1, text: "已上线", value: 1 },
+  { id: 2, text: "待发布", value: 2 },
+  { id: 3, text: "已下线", value: 3 },
 ];
 
 export const getPreviewHost = () => {

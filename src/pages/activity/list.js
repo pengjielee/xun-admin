@@ -1,29 +1,40 @@
-import { Form, Breadcrumb, Button, Table, Select, Input, Modal } from "antd";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Form, Breadcrumb, Button, Table, Select, Input, message } from "antd";
+import dayjs from "dayjs";
 import { Header } from "@/components";
-
 import { activityStatusOptions } from "@/utils";
+import { activityApi } from "@/services";
+import copy from "copy-to-clipboard";
 
 const { Option } = Select;
-const { confirm } = Modal;
-import "antd/dist/antd.css";
 
-export default function Index({ list }) {
+export default function List() {
   const router = useRouter();
   const [searchForm] = Form.useForm();
+  const [dataSource, setDataSource] = useState([]);
+  const [reload, setReload] = useState(true);
+
+  useEffect(() => {
+    activityApi.list().then((res) => {
+      if (res.code === 200) {
+        setDataSource(res.data);
+      }
+    });
+  }, [reload]);
 
   const columns = [
     {
-      title: "活动Id",
+      title: "活动ID",
       dataIndex: "id",
       key: "id",
-      width: "100px",
+      fixed: "left",
     },
     {
       title: "活动名称",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "draft_name",
+      key: "draft_name",
     },
     {
       title: "活动URL",
@@ -34,11 +45,28 @@ export default function Index({ list }) {
       title: "创建时间",
       dataIndex: "create_date",
       key: "create_date",
+      render: (text) => {
+        return dayjs(text).format("YYYY-MM-DD HH:mm:ss");
+      },
+      width: "200px",
     },
     {
       title: "更新时间",
       dataIndex: "update_date",
       key: "update_date",
+      render: (text) => {
+        return dayjs(text).format("YYYY-MM-DD HH:mm:ss");
+      },
+      width: "200px",
+    },
+    {
+      title: "首次发布时间",
+      dataIndex: "first_publish_date",
+      key: "first_publish_date",
+      render: (text) => {
+        return text ? dayjs(text).format("YYYY-MM-DD HH:mm:ss") : "--";
+      },
+      width: "200px",
     },
     {
       title: "状态",
@@ -46,11 +74,11 @@ export default function Index({ list }) {
       key: "status",
       render: (text, record) => (
         <div>
-          {record.status === 0 ? (
+          {record.status === 1 ? (
             <span className="status published">已上线</span>
-          ) : record.status === 1 ? (
-            <span className="status updated">待发布</span>
           ) : record.status === 2 ? (
+            <span className="status updated">待发布</span>
+          ) : record.status === 3 ? (
             <span className="status offline">已下线</span>
           ) : (
             "未知"
@@ -67,29 +95,42 @@ export default function Index({ list }) {
           <span className="action">
             <Link href={`/activity/edit/${record.id}`}>编辑</Link>
           </span>
-          <a className="action" onClick={() => handleSee(record)}>
-            查看
-          </a>
-          {record.status === 0 ? (
-            <a
-              className="action offline"
-              onClick={() => handleChangeStatus(record)}
-            >
-              下线
-            </a>
-          ) : record.status === 1 ? (
-            <a
-              className="action publish"
-              onClick={() => handleChangeStatus(record)}
-            >
-              发布
-            </a>
+
+          {record.status === 1 ? (
+            <>
+              <a className="action" onClick={() => handleSee(record.id)}>
+                查看
+              </a>
+              <a
+                className="action offline"
+                onClick={() => handleOffline(record.id)}
+              >
+                下线
+              </a>
+            </>
           ) : record.status === 2 ? (
+            <>
+              <a className="action" onClick={() => handlePreview(record.id)}>
+                预览
+              </a>
+              <a
+                className="action publish"
+                onClick={() => handlePublish(record.id)}
+              >
+                发布
+              </a>
+            </>
+          ) : record.status === 3 ? (
             <a
               className="action online"
-              onClick={() => handleChangeStatus(record)}
+              onClick={() => handleOnline(record.id)}
             >
               上线
+            </a>
+          ) : null}
+          {record.first_publish_date ? (
+            <a className="action" onClick={() => handleCopyUrl(record)}>
+              复制链接
             </a>
           ) : null}
         </div>
@@ -97,66 +138,45 @@ export default function Index({ list }) {
     },
   ];
 
-  const handleSee = (record) => {
-    // window.open(`/activity/preview/${record.id}`, "_blank");
-    router.push(`/activity/${record.id}`);
+  const handleCopyUrl = (record) => {
+    const url = `${window.location.origin}/activity/show/${record.url}`;
+    copy(url);
+    message.success(`复制成功`);
+  };
+
+  const handleSee = (id) => {
+    window.open(`/activity/${id}`, "_blank");
   };
 
   /*
    * 状态
-   * 0，已上线；执行下线；
-   * 1，待发布；执行发布；
-   * 2，已下线；执行上线；
+   * 1，已上线；执行下线；
+   * 2，待发布；执行发布；
+   * 3，已下线；执行上线；
    */
-  const handleChangeStatus = () => {
-    // let { id, status, url } = record;
+  const handleOnline = (id) => {
+    activityApi.online(id).then(() => {
+      setReload(!reload);
+    });
+  };
 
-    // let title, op;
+  const handleOffline = (id) => {
+    activityApi.offline(id).then(() => {
+      setReload(!reload);
+    });
+  };
 
-    // switch (status) {
-    //   case 0:
-    //     title = "确认下线？";
-    //     op = "offline";
-    //     break;
-    //   case 1:
-    //     title = "确认发布？";
-    //     op = "publish";
-    //     break;
-    //   case 2:
-    //     title = "确认上线？";
-    //     op = "publish";
-    //     break;
-    //   default:
-    //     title = "确认？";
-    //     op = "";
-    // }
-
-    // //如果是发布
-    // if (op == "publish" && url.startsWith("copy")) {
-    //   message.error("请修改页面Url，不能以copy开头");
-    //   return;
-    // }
-
-    confirm({
-      title: "",
-      async onOk() {
-        // try {
-        //   const res = await changeActivityStatus({ id: id, op: op });
-        //   const { code, msg } = res;
-        //   if (code === 200) {
-        //     message.success("操作成功");
-        //     setReload(!reload);
-        //   } else {
-        //     message.error(msg || "操作失败！");
-        //   }
-        // } catch (e) {
-        //   message.error("出错了！");
-        // }
-      },
+  const handlePublish = (id) => {
+    activityApi.publish(id).then(() => {
+      setReload(!reload);
     });
   };
 
   const handleSearch = () => {};
+
+  const handlePreview = (id) => {
+    window.open(`/activity/preview/${id}`, "_blank");
+  };
 
   return (
     <div className="page-admin page-activity-list">
@@ -205,22 +225,9 @@ export default function Index({ list }) {
       <Table
         rowKey={(record) => record.id}
         columns={columns}
-        dataSource={list}
+        dataSource={dataSource}
         scroll={{ x: "max-content" }}
       />
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const response = await fetch(`http://localhost:3001/api/activity/list`);
-
-  let list = [];
-  const { code, data } = await response.json();
-  if (code === 200) {
-    list = data;
-  }
-  return {
-    props: { list },
-  };
 }

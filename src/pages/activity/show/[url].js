@@ -9,8 +9,10 @@ Index.layout = "fullpage";
 export default Index;
 
 export async function getServerSideProps(req) {
-  const { id } = req.params;
-  const response = await fetch(`http://localhost:3001/api/activity/byid/${id}`);
+  const { url } = req.params;
+  const response = await fetch(
+    `http://localhost:3001/api/activity/byurl/${url}`
+  );
 
   let model = null;
   const { code, data } = await response.json();

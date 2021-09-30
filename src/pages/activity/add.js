@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Breadcrumb, Button, Form, Input, message } from "antd";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useState } from "react";
+import { Breadcrumb, Button, Form, Input, message } from "antd";
 import { Submiting, Header } from "@/components";
 import { activityApi } from "@/services";
 
-export default function Index() {
+export default function Add() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [submiting, setSubmiting] = useState(false);
@@ -62,7 +62,7 @@ export default function Index() {
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="活动名称"
-            name="name"
+            name="draft_name"
             rules={[{ required: true, message: "请输入活动名称" }]}
           >
             <Input maxLength={20} placeholder="请输入20字内活动名称" />
@@ -70,7 +70,7 @@ export default function Index() {
 
           <Form.Item
             label="页面标题"
-            name="title"
+            name="draft_title"
             rules={[{ required: true, message: "请输入页面标题" }]}
           >
             <Input maxLength={20} placeholder="请输入20字内标题" />
@@ -91,7 +91,7 @@ export default function Index() {
 
           <Form.Item
             label="页面关键字"
-            name="keywords"
+            name="draft_keywords"
             rules={[{ required: true, message: "请输入页面关键字" }]}
           >
             <Input.TextArea
@@ -102,7 +102,7 @@ export default function Index() {
 
           <Form.Item
             label="页面描述信息"
-            name="description"
+            name="draft_description"
             rules={[{ required: true, message: "请输入页面描述信息" }]}
           >
             <Input.TextArea

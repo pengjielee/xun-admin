@@ -4,12 +4,12 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 export default function Index({ model }) {
-  let { type, config } = model;
-  config = config ? JSON.parse(config) : null;
+  let { type, draft_config } = model;
+  draft_config = draft_config ? JSON.parse(draft_config) : null;
 
   const moduleData = {
     ...model,
-    ...config,
+    ...draft_config,
   };
 
   const Module = dynamic(() => import(`../../../modules/${type}/edit`));

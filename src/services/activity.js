@@ -9,9 +9,19 @@ export const list = (params) =>
   });
 
 //获取活动详情
-export const detail = (id) =>
+export const draft = (id) =>
   fetch({
-    url: `/api/activity/${id}`,
+    url: `/api/activity/draft/${id}`,
+  });
+
+export const detailById = (id) =>
+  fetch({
+    url: `/api/activity/byid/${id}`,
+  });
+
+export const detailByUrl = (url) =>
+  fetch({
+    url: `/api/activity/byurl/${url}`,
   });
 
 //添加活动
@@ -34,6 +44,24 @@ export const update = (data) =>
     headers: {
       "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
+  });
+
+export const publish = (id) =>
+  fetch({
+    url: `/api/activity/publish/${id}`,
+    method: "post",
+  });
+
+export const online = (id) =>
+  fetch({
+    url: `/api/activity/online/${id}`,
+    method: "post",
+  });
+
+export const offline = (id) =>
+  fetch({
+    url: `/api/activity/offline/${id}`,
+    method: "post",
   });
 
 export const getModule = (id) =>
@@ -66,9 +94,6 @@ export const deleteModule = (params) =>
   fetch({
     url: `/api/activity/module/delete/${params.activity_id}/${params.id}`,
     method: "post",
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
-    },
   });
 
 //更新活动状态

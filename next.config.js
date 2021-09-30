@@ -11,7 +11,7 @@ module.exports = {
   assetPrefix: isProd ? "https://static.xxx.com/" : "",
 
   images: {
-    domains: ["avatars.githubusercontent.com", "static.cnodejs.org"],
+    domains: ["avatars.githubusercontent.com", "static.cnodejs.org","of.xmfile.cn"],
   },
 
   env: {

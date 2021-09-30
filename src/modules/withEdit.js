@@ -1,9 +1,10 @@
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { activityApi } from "@/services";
 import { defaultModuleConfig } from "@/utils";
-import dynamic from "next/dynamic";
-import "antd/dist/antd.css";
+import headerImg from "@/images/header.png";
 
 export default function withEdit(WrappedComponent) {
   return function (props) {
@@ -33,8 +34,8 @@ export default function withEdit(WrappedComponent) {
 
     const onFinish = async (values) => {
       const { id, name, type, activity_id, ...rest } = values;
-      const config = JSON.stringify(rest);
-      const data = { id, name, type, activity_id, config };
+      const draft_config = JSON.stringify(rest);
+      const data = { id, name, type, activity_id, draft_config };
 
       activityApi.updateModule(data).then((res) => {
         if (res.code === 200) {
@@ -94,16 +95,13 @@ export default function withEdit(WrappedComponent) {
             </Form.Item>
           </Form>
         </div>
-        <div className="module-preview hidden">
+        <div className="module-preview">
           <div className="preview-container">
             <header className="preview-header">
-              <img
-                src="https://of.xmfile.cn/pro/mkt_resource/20210624/6bc16aaf2e8a4039bdd5f2a956a0e0f3.png"
-                className="status"
-              />
+              <Image src={headerImg} alt="" laytout="fill" />
               <div className="name">预览：{previewData.name}</div>
             </header>
-            <div className="sandbox">
+            <div className="preview-sandbox">
               <div className="page-activity">
                 {showSuccess ? (
                   <PreviewSuccess data={previewData} />
@@ -112,7 +110,7 @@ export default function withEdit(WrappedComponent) {
                 )}
               </div>
             </div>
-            <div className="mask"></div>
+            <div className="preview-mask"></div>
           </div>
         </div>
       </div>
