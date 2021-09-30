@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { useRouter } from "next/router";
 import { Header, Uploader } from "@/components";
-import { Input, Button, Row, Col, Form, message } from "antd";
+import { Row, Col, message } from "antd";
 
 const Add = () => {
   const router = useRouter();

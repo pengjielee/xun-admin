@@ -1,5 +1,4 @@
 import { Header } from "@/components";
-import dynamic from "next/dynamic";
 import { Button } from "antd";
 import { fileApi } from "@/services/index";
 

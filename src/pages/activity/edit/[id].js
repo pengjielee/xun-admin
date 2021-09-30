@@ -1,36 +1,23 @@
-import { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import {
-  Breadcrumb,
-  Button,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Spin,
-  message,
-} from "antd";
-import {
-  PhoneFilled,
-  WechatOutlined,
-  BgColorsOutlined,
-  SettingFilled,
-} from "@ant-design/icons";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Breadcrumb, Button, Form, Input, message } from "antd";
+import { BgColorsOutlined } from "@ant-design/icons";
 // import { BasicIcon, ModuleIcon, TimeIcon } from '@/styles/icons';
 import { useRouter } from "next/router";
-import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 import ColorPicker from "rc-color-picker";
 import { builtInModules } from "@/modules";
-import { Card, Submiting, Uploader, Header } from "@/components";
-import { defaultPageConfig, saleSystemOptions } from "@/utils";
-import moment from "moment";
+import { Card, Submiting, Header } from "@/components";
+import { defaultPageConfig } from "@/utils";
 import { activityApi } from "@/services";
 
 const Loading = Submiting;
-const { Option } = Select;
+
+const previewUrl = "";
+const firstPublishAt = "";
 
 import "rc-color-picker/assets/index.css";
 
@@ -51,17 +38,8 @@ export default function Index() {
 
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [submiting, setSubmiting] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
-  const [firstPublishAt, setFirstPublishAt] = useState(null);
 
   const frameRef = useRef(null);
-
-  useEffect(async () => {
-    if (id) {
-      getActivityInfo(id);
-    }
-  }, [id]);
 
   const getActivityInfo = (id) => {
     setLoading(true);
@@ -78,10 +56,14 @@ export default function Index() {
     setLoading(false);
   };
 
-  const onFinish = async (action) => {
+  useEffect(() => {
+    id && getActivityInfo(id);
+  }, [id]);
+
+  const onFinish = async () => {
     const values = await form.validateFields();
 
-    const { modules, config, ...rest } = values;
+    const { config, ...rest } = values;
 
     const data = {
       ...rest,
@@ -384,7 +366,8 @@ export default function Index() {
         <div className="activity-preview" style={{ display: "none " }}>
           <div className="preview-container">
             <header className="preview-header">
-              <img
+              <Image
+                alt=""
                 src="https://of.xmfile.cn/pro/mkt_resource/20210624/6bc16aaf2e8a4039bdd5f2a956a0e0f3.png"
                 className="status"
               />
@@ -408,7 +391,6 @@ export default function Index() {
         </div>
       </div>
       {loading ? <Loading /> : null}
-      {submiting ? <Submiting /> : null}
     </>
   );
 }

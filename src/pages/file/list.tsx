@@ -1,20 +1,11 @@
 import { Header } from "@/components";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  Form,
-  Select,
-  Input,
-  Divider,
-  Button,
-  Table,
-  Modal,
-  message,
-} from "antd";
+import { Divider, Button, Table, Modal, message } from "antd";
 import { ColumnProps } from "antd/es/table";
 import dayjs from "dayjs";
 import copy from "copy-to-clipboard";
 import { fileApi } from "@/services/index";
+import Image from "next/image";
 
 export default function Index({ models }) {
   const router = useRouter();
@@ -50,7 +41,7 @@ export default function Index({ models }) {
       render: (text) => {
         return (
           <>
-            <img width="100" src={text} />
+            <Image alt="" width="100" src={text} />
           </>
         );
       },

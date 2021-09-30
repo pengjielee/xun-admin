@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import React, { useRef } from "react";
 import { Header } from "@/components";
-import { Input, Button, Form, message } from "antd";
+import { Input, Button, Form } from "antd";
+import Script from "next/script";
 import aboutusImg from "@/images/aboutus.png";
 import addressImg from "@/images/address.png";
 import phoneImg from "@/images/phone.png";
@@ -157,7 +157,7 @@ const App = () => {
   return (
     <div className="page-tool-mail">
       <Header title="生成邮箱签名">
-        <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+        <Script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.7.1/pixi.min.js"></Script>
       </Header>
       <h1 className="title">生成邮箱签名</h1>
 

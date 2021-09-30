@@ -1,13 +1,6 @@
-import { useEffect } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import Error from "next/error";
-import {
-  defaultPageConfig,
-  defaultModuleConfig,
-  getPreviewHost,
-  getBaseUrl,
-} from "@/utils";
+import { defaultPageConfig, defaultModuleConfig } from "@/utils";
 
 // 需要在服务端渲染的组件（为了SEO）
 import Banner from "@/modules/banner/index";
@@ -18,7 +11,7 @@ import "normalize.css";
 
 const Index = ({ model }) => {
   const { activity, modules } = model;
-  const { id, title, keywords, description, url } = activity;
+  const { id, title, keywords, description } = activity;
 
   const config = activity.config
     ? JSON.parse(activity.config)

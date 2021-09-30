@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { Row, Col } from "antd";
 import {
@@ -50,7 +49,7 @@ const Home: NextPage = () => {
           {cards.map((card) => {
             return (
               <Col span={6} key={card.id}>
-                <Link href={card.href}>
+                <Link href={card.href} passHref>
                   <div className="card">
                     {renderIcon(card.type)}
                     <span className="text">{card.name}</span>

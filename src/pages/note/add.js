@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { useRouter } from "next/router";
 import { Header } from "@/components";
 import { Input, Button, Form, message } from "antd";

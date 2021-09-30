@@ -2,7 +2,6 @@ import { Breadcrumb } from "antd";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Error from "next/error";
 
 export default function Index({ model }) {
   let { type, config } = model;

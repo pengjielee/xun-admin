@@ -1,18 +1,10 @@
 import { Header } from "@/components";
-import Head from "next/head";
 import Link from "next/link";
 
 export default function List({ topics }) {
   return (
-    <div className="page page-topic-list">
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1.0,user-scalable=no"
-        />
-        <title>Topic List</title>
-      </Head>
+    <div className="page-topic-list">
+      <Header title="Topic List"></Header>
 
       <main>
         <ul>

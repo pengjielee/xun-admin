@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { useRouter } from "next/router";
 import { Header } from "@/components";
-import dayjs from "dayjs";
 import { Input, Button, Form, message } from "antd";
 import { noteApi } from "@/services/index";
 

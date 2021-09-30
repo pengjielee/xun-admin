@@ -1,10 +1,6 @@
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { useRouter } from "next/router";
-import { Header, Editor } from "@/components";
-import dayjs from "dayjs";
-import Link from "next/link";
-import { Input, Button, Form, message } from "antd";
+import { Header } from "@/components";
 
 const Detail = ({ model }) => {
   const router = useRouter();

@@ -3,13 +3,11 @@ import App from "next/app";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Layout, Menu, Breadcrumb, ConfigProvider } from "antd";
+import { Layout, Menu, ConfigProvider } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
-  FileImageOutlined,
   SettingOutlined,
   LoginOutlined,
   HomeOutlined,

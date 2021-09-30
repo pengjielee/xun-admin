@@ -1,28 +1,9 @@
-import { useEffect, useState } from "react";
-import {
-  Form,
-  Breadcrumb,
-  Button,
-  Table,
-  Select,
-  Input,
-  Modal,
-  Divider,
-  message,
-} from "antd";
+import { Form, Breadcrumb, Button, Table, Select, Input, Modal } from "antd";
 import { useRouter } from "next/router";
-import {
-  getActivityList,
-  changeActivityStatus,
-  copyActivity,
-} from "@/services/activity";
-import Head from "next/head";
 import Link from "next/link";
-import copy from "copy-to-clipboard";
 import { Header } from "@/components";
-import { activityApi } from "@/services";
 
-import { getPreviewHost, activityStatusOptions } from "@/utils";
+import { activityStatusOptions } from "@/utils";
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -31,14 +12,6 @@ import "antd/dist/antd.css";
 export default function Index({ list }) {
   const router = useRouter();
   const [searchForm] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [searchData, setSearchData] = useState({
-    name: "",
-    status: "",
-    page_no: 1,
-    page_size: 10,
-  });
-  const [reload, setReload] = useState(false);
 
   const columns = [
     {
@@ -135,50 +108,50 @@ export default function Index({ list }) {
    * 1，待发布；执行发布；
    * 2，已下线；执行上线；
    */
-  const handleChangeStatus = (record) => {
-    let { id, status, url } = record;
+  const handleChangeStatus = () => {
+    // let { id, status, url } = record;
 
-    let title, op;
+    // let title, op;
 
-    switch (status) {
-      case 0:
-        title = "确认下线？";
-        op = "offline";
-        break;
-      case 1:
-        title = "确认发布？";
-        op = "publish";
-        break;
-      case 2:
-        title = "确认上线？";
-        op = "publish";
-        break;
-      default:
-        title = "确认？";
-        op = "";
-    }
+    // switch (status) {
+    //   case 0:
+    //     title = "确认下线？";
+    //     op = "offline";
+    //     break;
+    //   case 1:
+    //     title = "确认发布？";
+    //     op = "publish";
+    //     break;
+    //   case 2:
+    //     title = "确认上线？";
+    //     op = "publish";
+    //     break;
+    //   default:
+    //     title = "确认？";
+    //     op = "";
+    // }
 
-    //如果是发布
-    if (op == "publish" && url.startsWith("copy")) {
-      message.error("请修改页面Url，不能以copy开头");
-      return;
-    }
+    // //如果是发布
+    // if (op == "publish" && url.startsWith("copy")) {
+    //   message.error("请修改页面Url，不能以copy开头");
+    //   return;
+    // }
 
     confirm({
-      title: title,
+      title: "",
       async onOk() {
-        try {
-          const res = await changeActivityStatus({ id: id, op: op });
-          const { code, msg } = res;
-          if (code === 200) {
-            message.success("操作成功");
-            setReload(!reload);
-          } else {
-            message.error(msg || "操作失败！");
-          }
-        } catch (e) {
-          message.error("出错了！");
-        }
+        // try {
+        //   const res = await changeActivityStatus({ id: id, op: op });
+        //   const { code, msg } = res;
+        //   if (code === 200) {
+        //     message.success("操作成功");
+        //     setReload(!reload);
+        //   } else {
+        //     message.error(msg || "操作失败！");
+        //   }
+        // } catch (e) {
+        //   message.error("出错了！");
+        // }
       },
     });
   };
@@ -198,7 +171,7 @@ export default function Index({ list }) {
         </Breadcrumb>
 
         <div className="search-form">
-          <Form form={searchForm} initialValues={searchData} layout="inline">
+          <Form form={searchForm} layout="inline">
             <Form.Item label="活动名称" name="name">
               <Input />
             </Form.Item>
@@ -230,7 +203,6 @@ export default function Index({ list }) {
       </header>
 
       <Table
-        loading={loading}
         rowKey={(record) => record.id}
         columns={columns}
         dataSource={list}
