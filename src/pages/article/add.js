@@ -1,7 +1,6 @@
-import React from "react";
 import { useRouter } from "next/router";
-import { Header, Editor } from "@/components";
 import { Input, Button, Form, message } from "antd";
+import { Header, Editor } from "@/components";
 import { articleApi } from "@/services/index";
 
 const Add = () => {

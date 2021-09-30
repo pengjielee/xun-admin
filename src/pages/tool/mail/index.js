@@ -124,8 +124,6 @@ const App = () => {
   let app = null;
 
   const onFinish = (values) => {
-    console.log(PIXI);
-
     app = new PIXI.Application({
       width: APP_WIDTH,
       height: APP_HEIGHT,
@@ -157,7 +155,9 @@ const App = () => {
   return (
     <div className="page-tool-mail">
       <Header title="生成邮箱签名">
+        //{" "}
         <Script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.7.1/pixi.min.js"></Script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
       </Header>
       <h1 className="title">生成邮箱签名</h1>
 

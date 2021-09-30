@@ -20,7 +20,7 @@ export default function Add() {
       .then((res) => {
         if (res.code === 200) {
           const model = res.data;
-          message.success("新建活动成功");
+          message.success("添加活动成功");
           router.push(`/activity/edit/${model.id}`);
         } else {
           message.error("页面Url已存在，换一个吧");
@@ -48,14 +48,14 @@ export default function Add() {
 
   return (
     <div className="page-admin page-activity-add">
-      <Header title="新建活动"></Header>
+      <Header title="添加活动"></Header>
 
       <header className="page-header">
         <Breadcrumb>
           <Breadcrumb.Item>
             <Link href="/activity/list">活动列表</Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>新建活动</Breadcrumb.Item>
+          <Breadcrumb.Item>添加活动</Breadcrumb.Item>
         </Breadcrumb>
       </header>
       <main>
@@ -113,7 +113,7 @@ export default function Add() {
 
           <Form.Item label=" ">
             <Button type="primary" htmlType="submit">
-              新建
+              添加
             </Button>
           </Form.Item>
         </Form>

@@ -1,6 +1,12 @@
 import fetch from "@/utils/fetch";
 import qs from "qs";
 
+export const list = (params) =>
+  fetch({
+    url: `/api/file/list`,
+    params,
+  });
+
 export const upload = (data) =>
   fetch({
     url: "/api/file/upload",

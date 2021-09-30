@@ -1,14 +1,31 @@
-import { Header } from "@/components";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { Divider, Button, Table, Modal, message } from "antd";
 import { ColumnProps } from "antd/es/table";
 import dayjs from "dayjs";
 import copy from "copy-to-clipboard";
 import { fileApi } from "@/services/index";
-import Image from "next/image";
+import { Header } from "@/components";
 
 export default function Index({ models }) {
   const router = useRouter();
+  const [dataSource, setDataSource] = useState([]);
+  const [reload, setReload] = useState(true);
+
+  useEffect(() => {
+    fileApi.list().then((res) => {
+      if (res.code === 200) {
+        const list = res.data.map((item) => {
+          const filename = item.url.replace("public/", "");
+          item.url = `http://localhost:3000/${filename}`;
+          return item;
+        });
+
+        setDataSource(list);
+      }
+    });
+  }, [reload]);
 
   const handleCopy = (url) => {
     copy(url);
@@ -17,12 +34,12 @@ export default function Index({ models }) {
 
   const handleRemove = (id) => {
     Modal.confirm({
-      title: "",
+      title: "删除图片",
       content: "确认删除",
       onOk() {
         fileApi.remove(id).then((res) => {
           if (res.code === 200) {
-            window.location.reload();
+            setReload(!reload);
           }
         });
       },
@@ -41,7 +58,7 @@ export default function Index({ models }) {
       render: (text) => {
         return (
           <>
-            <Image alt="" width="100" src={text} />
+            <Image alt="" width="200" height="100" src={text} />
           </>
         );
       },
@@ -86,7 +103,7 @@ export default function Index({ models }) {
           rowKey={(record) => record.id}
           bordered
           columns={columns}
-          dataSource={models}
+          dataSource={dataSource}
           scroll={{ x: "max-content" }}
         />
       </main>
@@ -94,19 +111,19 @@ export default function Index({ models }) {
   );
 }
 
-export async function getServerSideProps() {
-  const response = await fetch(`http://localhost:3001/api/file/list`);
+// export async function getServerSideProps() {
+//   const response = await fetch(`http://localhost:3001/api/file/list`);
 
-  let models = [];
-  const { code, data } = await response.json();
-  if (code === 200) {
-    models = data.map((item) => {
-      const filename = item.url.replace("public/", "");
-      item.url = `http://localhost:3000/${filename}`;
-      return item;
-    });
-  }
-  return {
-    props: { models },
-  };
-}
+//   let models = [];
+//   const { code, data } = await response.json();
+//   if (code === 200) {
+//     models = data.map((item) => {
+//       const filename = item.url.replace("public/", "");
+//       item.url = `http://localhost:3000/${filename}`;
+//       return item;
+//     });
+//   }
+//   return {
+//     props: { models },
+//   };
+// }
