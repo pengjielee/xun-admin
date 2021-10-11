@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Row, Col } from "antd";
@@ -27,7 +26,7 @@ const renderIcon = (type) => {
   }
 };
 
-const Home: NextPage = () => {
+const Home = () => {
   const cards = [
     { id: 1, name: "关于", href: "/about", type: "task" },
     { id: 2, name: "计数器", href: "/counter", type: "send" },

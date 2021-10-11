@@ -17,7 +17,7 @@ import { builtInModules } from "@/modules";
 import { Card, Submiting, Header } from "@/components";
 import { defaultPageConfig } from "@/utils";
 import { activityApi } from "@/services";
-import headerImg from "@/images/header.png";
+// import headerImg from "../../../assets/images/header.png";
 
 const Loading = Submiting;
 
@@ -419,7 +419,6 @@ export default function Index() {
         <div className="activity-preview">
           <div className="preview-container">
             <header className="preview-header">
-              <Image className="status" src={headerImg} alt="" laytout="fill" />
               <div className="name"></div>
             </header>
             {previewUrl ? (

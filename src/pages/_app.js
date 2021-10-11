@@ -28,7 +28,7 @@ const { Header, Content, Sider } = Layout;
 
 function MyApp({ Component, pageProps, pathname }) {
   const router = useRouter();
-  const layout = Component.layout || "admin";
+  const layout = (Component && Component.layout) || "admin";
 
   const [collapsed, setCollapsed] = useState(false);
 

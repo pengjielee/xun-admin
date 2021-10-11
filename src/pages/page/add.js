@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Form, Input, message } from "antd";
+import { Button, Form, Input } from "antd";
 import { Header, Editor } from "@/components";
 
 export default function New() {
@@ -12,7 +12,6 @@ export default function New() {
 
       <main>
         <Form form={form} layout="vertical" onFinish={onFinish}>
-
           <Form.Item
             label="页面标题"
             name="title"

@@ -1,31 +1,32 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Form, Input, Button, message as Toast } from "antd";
-import { register } from "@/services/user";
+import { Form, Input, Button, Checkbox, message as Toast } from "antd";
+import { login } from "@/services/user";
 
-const Register: NextPage = () => {
+const Login = () => {
   const router = useRouter();
 
-  const onFinish = (values: any) => {
-    register(values).then((res) => {
+  const onFinish = (values) => {
+    login(values).then((res) => {
       const { code, message } = res;
       if (code === 200) {
-        Toast.success("注册成功");
-        router.replace("/user/login");
+        Toast.success("登录成功");
+        router.replace("/");
       } else {
-        Toast.error(message || "注册失败");
+        Toast.error(message || "登录失败");
       }
     });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    Toast.error(errorInfo || "注册失败");
+  const onFinishFailed = (errorInfo) => {
+    Toast.error(errorInfo || "登录失败");
   };
 
+  const pageTitle = "用户登录";
+
   return (
-    <div className="page page-user-register">
+    <div className="page page-user-login">
       <Head>
         <meta charSet="UTF-8" />
         <meta
@@ -34,16 +35,16 @@ const Register: NextPage = () => {
         />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
-        <title>用户注册</title>
+        <title>{pageTitle}</title>
       </Head>
 
       <main>
         <header className="header">
-          <h2>用户注册</h2>
+          <h2>{pageTitle}</h2>
         </header>
         <Form
-          className="register-form"
-          name="register-form"
+          className="login-form"
+          name="login-form"
           labelCol={{ span: 4 }}
           initialValues={{ remember: true }}
           layout="vertical"
@@ -53,10 +54,7 @@ const Register: NextPage = () => {
           <Form.Item
             label="用户名"
             name="username"
-            rules={[
-              { required: true, message: "请输入用户名" },
-              { min: 5, message: "最少5个字符" },
-            ]}
+            rules={[{ required: true, message: "请输入用户名" }]}
           >
             <Input />
           </Form.Item>
@@ -64,24 +62,29 @@ const Register: NextPage = () => {
           <Form.Item
             label="密码"
             name="password"
-            rules={[
-              { required: true, message: "请输入密码" },
-              { min: 6, message: "最少6个字符" },
-            ]}
+            rules={[{ required: true, message: "请输入密码" }]}
           >
             <Input.Password />
           </Form.Item>
 
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{ offset: 0, span: 16 }}
+          >
+            <Checkbox>记住我</Checkbox>
+          </Form.Item>
+
           <div className="action">
             <Button type="primary" htmlType="submit" block>
-              注册
+              登录
             </Button>
           </div>
 
           <div className="note">
-            已经有账号，去
-            <Link href="/user/login">
-              <a>登录</a>
+            还没有账号，去
+            <Link href="/user/register">
+              <a>注册</a>
             </Link>
           </div>
         </Form>
@@ -90,6 +93,6 @@ const Register: NextPage = () => {
   );
 };
 
-Register.layout = "fullpage";
+Login.layout = "fullpage";
 
-export default Register;
+export default Login;

@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Form, Input, Checkbox, message } from "antd";
 import { Uploader } from "@/components";
 import withEdit from "@/modules/withEdit";
-import { resourceUpload } from "@/services";
+import { fileApi } from "@/services";
 
 const ReactWEditor = dynamic(import("wangeditor-for-react"), {
   ssr: false,
@@ -26,7 +26,7 @@ const config = {
 
     formData.append("type", 1);
     formData.append("files", file);
-    resourceUpload(formData).then((res) => {
+    fileApi.upload(formData).then((res) => {
       if (res.isSuccess) {
         insertImgFn(res.model);
       } else {

@@ -1,10 +1,8 @@
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { activityApi } from "@/services";
 import { defaultModuleConfig } from "@/utils";
-import headerImg from "@/images/header.png";
 
 export default function withEdit(WrappedComponent) {
   return function (props) {
@@ -98,7 +96,6 @@ export default function withEdit(WrappedComponent) {
         <div className="module-preview">
           <div className="preview-container">
             <header className="preview-header">
-              <Image src={headerImg} alt="" laytout="fill" />
               <div className="name">预览：{previewData.name}</div>
             </header>
             <div className="preview-sandbox">

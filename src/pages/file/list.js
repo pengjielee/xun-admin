@@ -2,13 +2,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Divider, Button, Table, Modal, message } from "antd";
-import { ColumnProps } from "antd/es/table";
 import dayjs from "dayjs";
 import copy from "copy-to-clipboard";
 import { fileApi } from "@/services/index";
 import { Header } from "@/components";
 
-export default function Index({ models }) {
+export default function Index() {
   const router = useRouter();
   const [dataSource, setDataSource] = useState([]);
   const [reload, setReload] = useState(true);
@@ -46,7 +45,7 @@ export default function Index({ models }) {
     });
   };
 
-  const columns: ColumnProps<any>[] = [
+  const columns = [
     {
       title: "ID",
       dataIndex: "id",

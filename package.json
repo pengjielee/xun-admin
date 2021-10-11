@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit -p tsconfig.json",
     "pt": "prettier --write src/ api/",
     "start:api": "node api/app.js"
   },
@@ -41,13 +40,10 @@
     "wangeditor-for-react": "^1.4.0"
   },
   "devDependencies": {
-    "@types/node": "^16.9.1",
-    "@types/react": "^17.0.21",
     "babel-plugin-module-resolver": "^4.1.0",
     "cross-env": "^7.0.3",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
-    "eslint-config-prettier": "^8.3.0",
-    "typescript": "^4.4.3"
+    "eslint-config-prettier": "^8.3.0"
   }
 }
