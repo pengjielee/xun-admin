@@ -64,3 +64,11 @@ body,
 .hidden {
   display: none;
 }
+
+fieldset {
+  border: 1px solid #ddd;
+}
+
+.ant-form legend {
+  border-bottom: none;
+}

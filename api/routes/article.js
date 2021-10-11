@@ -24,11 +24,8 @@ router.get("/list", (req, res) => {
 
 router.get("/:id", (req, res) => {
   db.then((db) => {
-    const article = db
-      .get("items")
-      .find({ id: req.params.id })
-      .value()
-      
+    const article = db.get("items").find({ id: req.params.id }).value();
+
     console.log(article);
     res.jsonp({ code: 200, msg: "success", data: article });
   });
