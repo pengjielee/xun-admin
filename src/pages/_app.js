@@ -123,6 +123,14 @@ const menus = [
         icon: null,
         subs: [],
       },
+      {
+        id: 67,
+        path: "/tool/iphone",
+        name: "Iphone",
+        key: "67",
+        icon: null,
+        subs: [],
+      },
     ],
   },
 ];
