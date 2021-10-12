@@ -67,12 +67,15 @@ export default function Index({ notes }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch(`http://localhost:3001/api/note/list`);
-
   let notes = [];
-  const { code, data } = await response.json();
-  if (code === 200) {
-    notes = data;
+  try {
+    const response = await fetch(`http://localhost:3001/api/note/list`);
+    const { code, data } = await response.json();
+    if (code === 200) {
+      notes = data;
+    }
+  } catch (e) {
+    console.log(e);
   }
   return {
     props: { notes },

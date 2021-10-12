@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button, Table, Divider } from "antd";
 import dayjs from "dayjs";
-
 export default function Index({ list }) {
   const router = useRouter();
   const columns = [
@@ -73,13 +72,18 @@ export default function Index({ list }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch(`http://localhost:3001/api/article/list`);
-
   let list = [];
-  const { code, data } = await response.json();
-  if (code === 200) {
-    list = data;
+
+  try {
+    const response = await fetch(`http://localhost:3001/api/article/list`);
+    const { code, data } = await response.json();
+    if (code === 200) {
+      list = data;
+    }
+  } catch (e) {
+    console.log("error", e);
   }
+
   return {
     props: { list },
   };

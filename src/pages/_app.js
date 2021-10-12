@@ -22,6 +22,7 @@ import "../assets/styles/user.scss";
 import "../assets/styles/site.scss";
 import "../assets/styles/page.scss";
 import "../assets/styles/activity.scss";
+import "../assets/styles/iphone.scss";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
