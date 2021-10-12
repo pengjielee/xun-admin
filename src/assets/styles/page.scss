@@ -30,7 +30,18 @@ $main-color: #eee;
 
 .page-tool-qrcode {
   canvas {
+    position: fixed;
+    top: 20%;
     border-radius: unset;
+  }
+}
+
+.page-tool-barcode {
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 

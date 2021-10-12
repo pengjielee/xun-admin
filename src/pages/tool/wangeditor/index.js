@@ -21,7 +21,7 @@ const App = () => {
   };
 
   return (
-    <div className="pages-tool-editor">
+    <div className="page-tool-editor">
       <Header title="WangEditor"></Header>
       <h1 className="title">WangEditor</h1>
 

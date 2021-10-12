@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Header } from "@/components";
 import { useState, useRef, useCallback } from "react";
-import { Input, InputNumber, Button, Form, Checkbox } from "antd";
+import { Input, InputNumber, Button, Form, Checkbox, message } from "antd";
 import QRCode from "qrcode.react";
 
 const SketchPicker = dynamic(import("react-color"), {
@@ -20,8 +20,8 @@ const App = () => {
   const [config, setConfig] = useState({
     url: "",
     size: 128,
-    bgColor: "#FFFFFF",
-    fgColor: "#000000",
+    bgColor: colors.bgColor,
+    fgColor: colors.fgColor,
     imageSettings: {
       src: "http://localhost:3000/favicon.png",
       width: 24,
@@ -31,6 +31,10 @@ const App = () => {
 
   const handleDownload = () => {
     const canvas = document.getElementById("qrcode");
+    if (!canvas) {
+      message.error("请先生成二维码");
+      return;
+    }
     const img = new Image();
     img.src = canvas.toDataURL("image/png");
     const a = document.createElement("a");
@@ -118,14 +122,14 @@ const App = () => {
               <Form.Item
                 label="Logo宽"
                 name={["imageSettings", "width"]}
-                rules={[{ required: false, message: "请输入Logo宽" }]}
+                rules={[{ required: true, message: "请输入Logo宽" }]}
               >
                 <InputNumber style={{ width: "100%" }} />
               </Form.Item>
               <Form.Item
                 label="Logo高"
                 name={["imageSettings", "height"]}
-                rules={[{ required: false, message: "请输入Logo高" }]}
+                rules={[{ required: true, message: "请输入Logo高" }]}
               >
                 <InputNumber style={{ width: "100%" }} />
               </Form.Item>
