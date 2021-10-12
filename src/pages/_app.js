@@ -26,6 +26,106 @@ import "../assets/styles/activity.scss";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
+const menus = [
+  {
+    id: 1,
+    path: "/",
+    name: "首页",
+    key: "1",
+    icon: <HomeOutlined />,
+    subs: [],
+  },
+  {
+    id: 2,
+    path: "/note/list",
+    name: "随记",
+    key: "2",
+    icon: <MailOutlined />,
+    subs: [],
+  },
+  {
+    id: 3,
+    path: "/article/list",
+    name: "文章",
+    key: "3",
+    icon: <FileTextOutlined />,
+    subs: [],
+  },
+  {
+    id: 4,
+    path: "/file/list",
+    name: "文件",
+    key: "4",
+    icon: <UploadOutlined />,
+    subs: [],
+  },
+  {
+    id: 5,
+    path: "/activity/list",
+    name: "活动",
+    key: 5,
+    icon: <HomeOutlined />,
+    subs: [],
+  },
+  {
+    id: 6,
+    path: "/tool",
+    name: "工具",
+    key: "6",
+    icon: <SettingOutlined />,
+    subs: [
+      {
+        id: 61,
+        path: "/tool/mail",
+        name: "生成邮箱签名",
+        key: "61",
+        icon: null,
+        subs: [],
+      },
+      {
+        id: 62,
+        path: "/tool/wangeditor",
+        name: "编辑器",
+        key: "62",
+        icon: null,
+        subs: [],
+      },
+      {
+        id: 63,
+        path: "/tool/excel/export",
+        name: "导出Excel",
+        key: "63",
+        icon: null,
+        subs: [],
+      },
+      {
+        id: 64,
+        path: "/tool/qrcode",
+        name: "生成二维码",
+        key: "64",
+        icon: null,
+        subs: [],
+      },
+      {
+        id: 65,
+        path: "/tool/barcode",
+        name: "生成条形码",
+        key: "65",
+        icon: null,
+        subs: [],
+      },
+      {
+        id: 66,
+        path: "/tool/echarts",
+        name: "Echarts",
+        key: "66",
+        icon: null,
+        subs: [],
+      },
+    ],
+  },
+];
+
 function MyApp({ Component, pageProps, pathname }) {
   const router = useRouter();
   const layout = (Component && Component.layout) || "admin";
@@ -44,81 +144,61 @@ function MyApp({ Component, pageProps, pathname }) {
     router.replace("/user/login");
   };
 
-  const menus = {
-    "/": {
-      selected: "1",
-      sub: false,
-    },
-    "/note/list": {
-      selected: "2",
-      sub: false,
-    },
-    "/note/add": {
-      selected: "2",
-      sub: false,
-    },
-    "/note/edit/[id]": {
-      selected: "2",
-      sub: false,
-    },
-    "/article/list": {
-      selected: "3",
-      sub: false,
-    },
-    "/article/edit/[id]": {
-      selected: "3",
-      sub: false,
-    },
-    "/file/list": {
-      selected: "4",
-      sub: false,
-    },
-    "/file/upload": {
-      selected: "4",
-      sub: false,
-    },
-    "/activity/list": {
-      selected: "5",
-      sub: false,
-    },
-    "/activity/add": {
-      selected: "5",
-      sub: false,
-    },
-    "/activity/[id]": {
-      selected: "5",
-      sub: false,
-    },
-    "/activity/edit/[id]": {
-      selected: "5",
-      sub: false,
-    },
-    "/activity/module/[id]": {
-      selected: "5",
-      sub: false,
-    },
-    "/tool/mail": {
-      selected: "11",
-      sub: true,
-    },
-    "/tool/wangeditor": {
-      selected: "12",
-      sub: true,
-    },
-    "/tool/excel/export": {
-      selected: "13",
-      sub: true,
-    },
-  };
   let selectedKeys = ["1"];
   let openKeys = ["1"];
 
-  if (pathname && menus[pathname]) {
-    selectedKeys = [menus[pathname].selected];
-    openKeys = menus[pathname].sub
-      ? ["sub", menus[pathname].selected]
-      : [menus[pathname].selected];
+  if (pathname) {
+    let matchedMenu = null;
+    const firstpath = pathname.substring(0, pathname.lastIndexOf("/"));
+    for (let i = 0; i < menus.length; i++) {
+      if (menus[i].subs.length > 0) {
+        if (menus[i].path.indexOf(firstpath) >= 0) {
+          matchedMenu = menus[i];
+          break;
+        }
+      }
+    }
+
+    if (matchedMenu) {
+      if (matchedMenu.subs.length <= 0) {
+        const subpath = pathname.substring(0, pathname.lastIndexOf("/"));
+        selectedKeys = [matchedMenu.key];
+        openKeys = [matchedMenu.key];
+      } else {
+        const subs = matchedMenu.subs;
+        for (let i = 0; i < subs.length; i++) {
+          if (pathname === subs[i].path) {
+            selectedKeys = [matchedMenu.key, subs[i].key];
+            openKeys = [matchedMenu.key, subs[i].key];
+          }
+        }
+      }
+    }
   }
+
+  const renderMenus = () => {
+    return menus.map((menu) => {
+      if (menu.subs.length > 0) {
+        return (
+          <SubMenu key={menu.key} icon={menu.icon} title={menu.name}>
+            {menu.subs.map((submenu) => {
+              return (
+                <Menu.Item key={submenu.key} icon={submenu.icon}>
+                  <Link href={submenu.path}>{submenu.name}</Link>
+                </Menu.Item>
+              );
+            })}
+          </SubMenu>
+        );
+      } else {
+        return (
+          <Menu.Item key={menu.key} icon={menu.icon}>
+            <Link href={menu.path}>{menu.name}</Link>
+          </Menu.Item>
+        );
+      }
+    });
+  };
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -131,32 +211,7 @@ function MyApp({ Component, pageProps, pathname }) {
             defaultSelectedKeys={selectedKeys}
             defaultOpenKeys={openKeys}
           >
-            <Menu.Item key="1" icon={<HomeOutlined />}>
-              <Link href="/">首页</Link>
-            </Menu.Item>
-            <Menu.Item key="2" icon={<MailOutlined />}>
-              <Link href="/note/list">随记</Link>
-            </Menu.Item>
-            <Menu.Item key="3" icon={<FileTextOutlined />}>
-              <Link href="/article/list">文章</Link>
-            </Menu.Item>
-            <Menu.Item key="4" icon={<UploadOutlined />}>
-              <Link href="/file/list">文件</Link>
-            </Menu.Item>
-            <Menu.Item key="5" icon={<UploadOutlined />}>
-              <Link href="/activity/list">活动</Link>
-            </Menu.Item>
-            <SubMenu key="sub" icon={<SettingOutlined />} title="工具">
-              <Menu.Item key="11">
-                <Link href="/tool/mail">生成邮箱签名</Link>
-              </Menu.Item>
-              <Menu.Item key="12">
-                <Link href="/tool/wangeditor">编辑器</Link>
-              </Menu.Item>
-              <Menu.Item key="13">
-                <Link href="/tool/excel/export">导出Excel</Link>
-              </Menu.Item>
-            </SubMenu>
+            {renderMenus()}
           </Menu>
         </Sider>
         <Layout className="site-main">
