@@ -43,6 +43,8 @@
     "react-hook-form": "^7.7.1",
     "react-mobile-datepicker": "^4.0.2",
     "react-toastify": "^7.0.4",
+    "remark": "^14.0.1",
+    "remark-html": "^15.0.0",
     "sass": "^1.41.0",
     "wangeditor-for-react": "^1.4.0"
   },
