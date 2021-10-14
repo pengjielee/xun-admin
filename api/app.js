@@ -13,6 +13,7 @@ app.use("/api/article", require("./routes/article"));
 app.use("/api/file", require("./routes/file"));
 app.use("/api/excel", require("./routes/excel"));
 app.use("/api/activity", require("./routes/activity"));
+app.use("/api/menu", require("./routes/menu"));
 
 const PORT = 3001;
 
