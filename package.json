@@ -13,8 +13,8 @@
     "start:api": "node api/app.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/pengjielee/xun-admin.git"
+    "type": "git",
+    "url": "https://github.com/pengjielee/xun-admin.git"
   },
   "dependencies": {
     "antd": "^4.16.0",
@@ -32,7 +32,7 @@
     "jsbarcode": "^3.11.5",
     "lowdb": "^1.0.0",
     "moment": "^2.29.1",
-    "multer": "^1.4.3",
+    "multer": "^1.4.4",
     "nanoid": "^3.1.28",
     "next": "11.1.2",
     "normalize.css": "^8.0.1",
